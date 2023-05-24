@@ -18,6 +18,15 @@
     {%endfor%}
   </div>
   <div>
+    <div>
+      <h4>
+        {% if rooms_count == 1%}
+        Only {{rooms_count}} room is available.
+        {% elif rooms_count > 1 %}
+        {{rooms_count}} rooms are available.
+        {% endif %}
+      </h4>
+    </div>
     <a href="{% url "create-room" %}">Create Room</a>
     {% for room in rooms %}
     <div>

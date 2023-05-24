@@ -25,8 +25,9 @@ def home(request):
     # rooms = Room.objects.all()
     topics = Topic.objects.all()
     # print(vars(request))
-    context = {'rooms': rooms, 'topics': topics}
-    print(rooms)
+    print(rooms.count())
+    context = {'rooms': rooms, 'topics': topics, 'rooms_count': rooms.count()}
+    # print(rooms)
     return render(request, 'base/home.html', context=context)
 
 
@@ -55,7 +56,7 @@ def updateRoom(request, pk):
     form = RoomForm(instance=room)
 
     if request.method == 'POST':
-        # if we havnt given instance then the new record will be created
+        # if we have not given instance then the new record will be created
         room_form = RoomForm(request.POST, instance=room)
         if room_form.is_valid():
             room_form.save()
