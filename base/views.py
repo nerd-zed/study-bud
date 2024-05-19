@@ -81,9 +81,17 @@ def home(request):
     )
     # rooms = Room.objects.all()
     topics = Topic.objects.all()
+    rooms_count = rooms.count()
+    room_messages = Message.objects.filter(Q(room__topic__title__icontains=q))
+
     # print(vars(request))
     print(rooms.count())
-    context = {'rooms': rooms, 'topics': topics, 'rooms_count': rooms.count()}
+    context = {'rooms': rooms, 
+               'topics': topics, 
+               'rooms_count': rooms_count,
+               'room_messages':room_messages,
+
+               }
     # print(rooms)
     return render(request, 'base/home.html', context=context)
 
@@ -91,7 +99,7 @@ def home(request):
 def room(request, pk):
     print('printing pk: %s' % pk)
     current_room = Room.objects.get(id=pk)
-    room_messages = current_room.message_set.all().order_by('-created')
+    room_messages = current_room.message_set.all()
     participants = current_room.participants.all()
 
     if request.method == 'POST':
@@ -160,8 +168,12 @@ def deleteMessage(request, pk):
 
     if request.user.username != message.user.username:
         return HttpResponse('You are not allowed here.')
-
+    print('request================================================================')
+    # print(vars(request))
+    # print(request.environ.get('HTTP_REFERER'))
+    print('request================================================================')
+    go_back_url = request.environ.get('HTTP_REFERER')
     if request.method == 'POST':
         message.delete()
         return redirect('home')
-    return render(request, 'base/delete.html', {'obj': message})
+    return render(request, 'base/delete.html', {'obj': message, 'go_back_url':go_back_url})

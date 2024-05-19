@@ -1,3 +1,4 @@
 **/__pycache__
 studybud/__pycache__/
 **/migrations/
+./db.sqlite3
