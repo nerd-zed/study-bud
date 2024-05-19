@@ -1,4 +1,4 @@
 **/__pycache__
 studybud/__pycache__/
 **/migrations/
-*.sqlite3
+db.sqlite3
